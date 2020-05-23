@@ -20,6 +20,7 @@ public:
 	Ship& reset(const Point<double>& pos, const Vec<double>& vec, const int& fuel, const int& rotate, const int& power);
 	
 	Ship& setRotate(const int& rotate);
+	Ship& setVelocity(const double& vx, const double& vy);
 
 	const Point<double>& getPos() const;
 	const Vec<double>& getVel() const;

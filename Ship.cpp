@@ -29,6 +29,13 @@ Ship& Ship::setRotate(const int& rotate)
 	return (*this);
 }
 
+Ship& Ship::setVelocity(const double& vx, const double& vy)
+{
+	this->vec.setVx(vx);
+	this->vec.setVy(vy);
+	return (*this);
+}
+
 const Point<double>& Ship::getPos() const
 {
 	return (this->pos);

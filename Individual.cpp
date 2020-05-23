@@ -40,28 +40,31 @@ Individual& Individual::computeMark(const Mars& mars)
 	const Point<double>& shipPos = this->ship.getPos();
 	const Point<double>& closest = (std::abs(p1.getX() - shipPos.getX()) < std::abs(p2.getX() - shipPos.getX())) ? p1 : p2;
 
+
 	if (shipPos.isXBetween(p1.getX(), p2.getX()))
 	{
 		this->mark = 200;
 		if (std::abs(this->ship.getVel().getVx()) > 20)
-			this->mark -= (std::abs(this->ship.getVel().getVx()) - 20) / 1.5;
+			this->mark -= (std::abs(this->ship.getVel().getVx()) - 20.0) / 2.0;
 		//std::cerr << '\n' <<"mark = " << this->mark << " vx = " << this->ship.getVel().getVx() << std::endl;
 		if (std::abs(this->ship.getVel().getVy()) > 40)
-			this->mark -= (std::abs(this->ship.getVel().getVy()) - 40) / 1.5;
+			this->mark -= (std::abs(this->ship.getVel().getVy()) - 40.0) / 2.0;
 		//std::cerr << "mark = " << this->mark << " vy = " << this->ship.getVel().getVy() << std::endl;
 		//if (abs(this->ship.getRotate() > 15))
-		//	this->mark -= abs(this->ship.getRotate()) - 15;
-		this->mark -= std::abs(this->ship.getRotate() / 2.0);
+		this->mark -= std::abs(this->ship.getRotate()) - 15.0;
+		//std::cerr << "mark = " << this->mark << std::endl;
 		//std::cerr << "mark = " << this->mark << " rotate = " << this->ship.getRotate() << std::endl;
+		//dist = Simulation.segmentPointDistance(Mars.landingZone[0].x, Mars.landingZone[0].y, Mars.landingZone[1].x, Mars.landingZone[1].y, lander.x, lander.y)
+		//params = (((2 * abs(lander.hSpeed)) if abs(lander.hSpeed) > 20 else 0) + ((2 * abs(lander.vSpeed)) if abs(lander.vSpeed) > 40 else 0) + ((2 * abs(lander.angle)) if abs(lander.angle) > 15 else 0)) if lander.site else 0
+			//return 1 / (dist + params)
 	}
 	else
 	{
+		//this->mark = 100 - (100 * std::sqrt(std::pow(closest.getX() - shipPos.getX(), 2) + std::pow(closest.getY() - shipPos.getY(), 2)) / mars.getMaxDist());
 		//this->mark = 100 / std::sqrt(std::pow(closest.getX() - shipPos.getX(), 2) + std::pow(closest.getY() - shipPos.getY(), 2));
-		this->mark = 100 - (100 * std::sqrt(std::pow(closest.getX() - shipPos.getX(), 2) + std::pow(closest.getY() - shipPos.getY(), 2)) / mars.getMaxDist());
+		this->mark = 100 / (std::abs(closest.getX() - shipPos.getX()) + std::abs(closest.getY() - shipPos.getY()));
 		//std::cerr << "mark = " << this->mark << std::endl;
 	}
-	if (this->mark > 1)
-		this->mark = std::pow(this->mark, 3);
 	return (*this);
 }
 
@@ -75,6 +78,7 @@ Individual& Individual::computeLastPos(const Mars& mars, Point<double>* dispPop,
 		rotations[i] = this->ship.getRotate();
 		Point<double>	lastPos = this->ship.getPos();
 		int				lastRotation = this->ship.getRotate();
+
 		 if (dispPop)
 		 	dispPop[i] = lastPos;
 		this->ship.toNextPosition(mars.getGravity(), this->genes[i].getPower(), this->genes[i].getRotation());
@@ -104,7 +108,6 @@ Individual& Individual::setMark(const double& mark)
 	return (*this);
 }
 
-
 Individual& Individual::normMark(const double & sum)
 {
 	this->mark /= sum;
@@ -115,13 +118,11 @@ Individual& Individual::continuousBorn(const Individual& parent1, const Individu
 {
 	for (unsigned int i = 0; i < GENES; i++)
 	{
-		int r = std::rand() % 100;
-		if (r < 1)
+		int r = std::rand() % 1000;
+		if (r < 15)
 			this->genes[i].mutate();
 		else
 			this->genes[i].evolve(parent1.genes[i], parent2.genes[i], crossRate);
-			//else if (r == 10)
-		//	this->genes[i].hardMutate();
 	}
 	return (*this);
 }
@@ -132,13 +133,13 @@ Individual& Individual::born(const Individual& parent1, const Individual& parent
 	for (int i = 0; i < index; i++)
 	{
 		this->genes[i] = parent1.genes[i];
-		if (std::rand() % 100 < 1)
+		if ((std::rand() % 100) < 1)
 			this->genes[i].mutate();
 	}
 	for (int i = index; i < GENES; i++)
 	{
 		this->genes[i] = parent2.genes[i];
-		if (std::rand() % 100 < 1)
+		if ((std::rand() % 100) < 1)
 			this->genes[i].mutate();
 	}
 	return (*this);

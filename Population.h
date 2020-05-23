@@ -1,7 +1,7 @@
 #pragma once
 #ifndef POPUATION_H
 # define POPULATION_H
-#define POP	  150
+#define POP	  300
 # include <vector>
 # include "Individual.h"
 
@@ -26,11 +26,13 @@ public:
 
 	bool		solutionFound() const;
 	
-	int			getAverageVx() const;
+	double		getAverageVx() const;
 
-	int			getAverageVy() const;
+	double		getAverageVy() const;
 
-	int			getAverageRotation() const;
+	double		getAverageRotation() const;
+
+	double		getAverageMark() const;
 
 	Individual* getSolution();
 
@@ -57,7 +59,7 @@ private:
 
 	const Individual& getCandidate() const;
 
-	Population& generateNewPop();
+	Population& generateNewPop(const Mars& mars);
 
 	Population& rouletteWheel();
 

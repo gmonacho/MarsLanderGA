@@ -4,7 +4,7 @@
 
 Gene::Gene()
 {
-	this->mutate();
+	this->hardMutate();
 }
 
 Gene::Gene(int rotation, int power)
@@ -47,5 +47,9 @@ Gene& Gene::hardMutate()
 Gene& Gene::setRotation(const int& rotation)
 {
 	this->rotation = rotation;
+	if (this->rotation > 15)
+		this->rotation = 15;
+	else if (this->rotation < -15)
+		this->rotation = -15;
 	return (*this);
 }

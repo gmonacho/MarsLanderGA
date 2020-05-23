@@ -16,7 +16,7 @@ Population& Population::nextGeneration(const Mars& mars, Point<double>** dispPop
 	this->computeMarks(mars, dispPop);
 	this->checkSolution(mars);
 	this->rouletteWheel();
-	this->generateNewPop();
+	this->generateNewPop(mars);
 	this->swapPops();
 	return (*this);
 }
@@ -102,10 +102,10 @@ const Individual& Population::getCandidate() const
 	return (this->currPop[i]);
 }
 
-int Population::getAverageVx() const
+double Population::getAverageVx() const
 {
 	double	sum{ 0 };
-	int		n{ 0 };
+	double	n{ 0 };
 
 	for (int i = 0; i < POP; i++)
 	{
@@ -117,10 +117,10 @@ int Population::getAverageVx() const
 }
 
 
-int Population::getAverageVy() const
+double Population::getAverageVy() const
 {
 	double	sum{ 0 };
-	int		n{ 0 };
+	double	n{ 0 };
 
 	for (int i = 0; i < POP; i++)
 	{
@@ -131,10 +131,10 @@ int Population::getAverageVy() const
 	return (sum / n);
 }
 
-int Population::getAverageRotation() const
+double Population::getAverageRotation() const
 {
 	double	sum{ 0 };
-	int		n{ 0 };
+	double	n{ 0 };
 
 	for (int i = 0; i < POP; i++)
 	{
@@ -145,14 +145,30 @@ int Population::getAverageRotation() const
 	return (sum / n);
 }
 
+double Population::getAverageMark() const
+{
+	double	sum{ 0 };
+	double	n{ 0 };
+
+	for (int i = 0; i < POP; i++)
+	{
+		sum += this->currPop[i].getMark();
+		n++;
+	}
+	return (sum / n);
+}
+
 Individual* Population::getSolution()
 {
 	return (this->solution);
 }
 
-Population& Population::generateNewPop()
+Population& Population::generateNewPop(const Mars& mars)
 {
-	int elitCount = POP * (15 / 100.0);
+	const Point<double>& p1 = mars.getLandingP1();
+	const Point<double>& p2 = mars.getLandingP2();
+	int elitCount = POP * (10 / 100.0);
+
 	if (elitCount % 2 == 1)
 		elitCount++;
 	for (int i = 0; i < elitCount; i++)
@@ -162,12 +178,18 @@ Population& Population::generateNewPop()
 		const Individual& parent1 = this->getCandidate();
 		const Individual& parent2 = this->getCandidate();
 		
-		double random = (std::rand() % 1000) / 999;
-
-		this->nextPop[i++].continuousBorn(parent1, parent2, random);
-		this->nextPop[i].continuousBorn(parent2, parent1, random);
-
-		//this->nextPop[i].born(parent1, parent2);
+		if ((parent1.getShip().getPos().isXBetween(p1.getX(), p2.getX())
+			|| parent2.getShip().getPos().isXBetween(p1.getX(), p2.getX())))
+		{
+			double random = (std::rand() % 1000) / 1000.0;
+			this->nextPop[i++].continuousBorn(parent1, parent2, random);
+			this->nextPop[i].continuousBorn(parent2, parent1, random);
+		}
+		else
+		{
+			this->nextPop[i++].born(parent1, parent2);
+			this->nextPop[i].born(parent1, parent2);
+		}
 	}
 	return (*this);
 }

@@ -62,13 +62,13 @@ Mars::Mars(const double& gravity)
 Mars::Mars()
 {
 	// easy on right
-	this->surface = std::vector<Point<double>>({ Point<double>(0, 100),
-		Point<double>(1000, 500),
-		Point<double>(1500, 1500),
-		Point<double>(3000, 1000),
-		Point<double>(4000, 150),
-		Point<double>(5500, 150),
-		Point<double>(6999, 800) });
+	//this->surface = std::vector<Point<double>>({ Point<double>(0, 100),
+	//	Point<double>(1000, 500),
+	//	Point<double>(1500, 1500),
+	//	Point<double>(3000, 1000),
+	//	Point<double>(4000, 150),
+	//	Point<double>(5500, 150),
+	//	Point<double>(6999, 800) });
 	
 	// 2
 	//this->surface = std::vector<Point<double>>({ Point<double>(0, 100),
@@ -82,14 +82,14 @@ Mars::Mars()
 	//	Point<double>(6000, 1000),
 	//	Point<double>(6999, 2000) });
 
-	// 3
-	//this->surface = std::vector<Point<double>>({ Point<double>(0, 100),
-	//	Point<double>(1000, 500),
-	//	Point<double>(1500, 1500),
-	//	Point<double>(3000, 1000),
-	//	Point<double>(4000, 150),
-	//	Point<double>(5500, 150),
-	//	Point<double>(6999, 800) });
+	 //3
+	this->surface = std::vector<Point<double>>({ Point<double>(0, 100),
+		Point<double>(1000, 500),
+		Point<double>(1500, 1500),
+		Point<double>(3000, 1000),
+		Point<double>(4000, 150),
+		Point<double>(5500, 150),
+		Point<double>(6999, 800) });
 
 	//4
 	//this->surface = std::vector<Point<double>>({ Point<double>(0, 1000),

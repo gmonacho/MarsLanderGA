@@ -16,7 +16,7 @@
 #define MAP_Y 3000
 #define WIN_X 1000
 #define WIN_Y 600
-#define POP	  150
+#define POP	  300
 #define GENES 200
 
 void drawPopulation(Graphique& winSdl, Point<double>** currPop)
@@ -89,11 +89,11 @@ int main(int ac, char** av)
 		Graphique				winSdl = Graphique(WIN_X, WIN_Y);
 		SDL_Event				event;
 		// easy on right
-		Ship					startShip(Point<double>(2500, 2700), Vec<double>(0, 0), 550, 0, 0);
+		//Ship					startShip(Point<double>(2500, 2700), Vec<double>(0, 0), 550, 0, 0);
 		// 2
 		//Ship					startShip(Point<double>(6500, 2800), Vec<double>(-100, 0), 0, 90, 600);
 		// 3
-		//Ship					startShip = Ship(Point<double>(6500, 2800), Vec<double>(-90, 0), 750, 90, 0);
+		Ship					startShip = Ship(Point<double>(6500, 2800), Vec<double>(-90, 0), 750, 90, 0);
 		//4
 		//Ship					startShip = Ship(Point<double>(500, 2700), Vec<double>(100, 0), 800, -90, 0);
 		//t_ship					ship = t_ship{ 500, 2700, 100, 0, 0, -90, 800 };
@@ -120,11 +120,20 @@ int main(int ac, char** av)
 			SDL_PollEvent(&event);
 			if (event.type == SDL_QUIT || event.key.keysym.scancode == SDL_SCANCODE_ESCAPE)
 				break;
-			//std::cerr << pop.getAverageVx() << " " << pop.getAverageVy() << " " <<  pop.getAverageRotation() << std::endl;
+			//std::cerr << pop.getAverageVx() << " " << pop.getAverageVy() << " " <<  pop.getAverageRotation() << " " << pop.getAverageMark() <<  std::endl;
 			drawPopulation(winSdl, currPop);
 			drawMars(winSdl, mars.getSurface());
 			winSdl.present();
 			i++;
+			//std::cerr << "i = " << i << std::endl;
+			//while (1)
+			//{
+			//	SDL_PollEvent(&event);
+			//	if (event.type == SDL_KEYDOWN)
+			//		if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
+			//			break;
+			//}
+			//SDL_Delay(100);
 		}
 		if (event.type == SDL_QUIT)
 			break;
@@ -134,13 +143,6 @@ int main(int ac, char** av)
 		" Max = " << *std::max_element(notes.begin(), notes.end()) <<
 		" Min = " << *std::min_element(notes.begin(), notes.end()) <<
 		" Size = " << notes.size() << std::endl;
-	/*while (1)
-	{
-		SDL_PollEvent(&event);
-		if (event.type == SDL_KEYDOWN)
-			if (event.key.keysym.scancode == SDL_SCANCODE_RETURN)
-				break;
-	}*/
 	return (0);
 }
 
